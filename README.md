@@ -1,73 +1,117 @@
-# React + TypeScript + Vite
+# 🚀 Maps Lead Scraper (WIP)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A SaaS platform to extract structured business lead data from Google Maps based on category and region inputs.
 
-Currently, two official plugins are available:
+> ⚠️ This project is currently in active development (MVP stage).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📌 Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This tool allows users to generate targeted business leads by simply providing:
 
-## Expanding the ESLint configuration
+- Business category (e.g., *restaurants, gyms, salons*)
+- Location (city, region, or country)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The system then collects and structures publicly available data such as:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Business Name  
+- Address  
+- Phone Number  
+- Email (if available)  
+- Additional metadata (planned)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Built as a fullstack SaaS product with user dashboards and admin control.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚙️ Features (Current & Planned)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### ✅ MVP (In Progress)
+- Google Maps data scraping (category + location based)
+- Basic lead extraction (name, address, phone)
+- Backend API for scraping requests
+- Initial database schema
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🔜 Upcoming
+- User authentication & accounts
+- User dashboard (lead management, exports, history)
+- Admin panel (usage control, monitoring)
+- Email extraction improvements
+- Rate limiting & queue system
+- Export options (CSV, JSON)
+- Billing & subscription system
+
+---
+
+## 🏗️ Tech Stack
+
+**Frontend**
+- React (or Next.js planned)
+
+**Backend**
+- Node.js / Express
+
+**Database**
+- MongoDB / PostgreSQL (TBD)
+
+**Scraping Layer**
+- Headless browser automation (Puppeteer / Playwright)
+- Anti-detection strategies (planned)
+
+---
+
+## 🧠 Architecture (High-Level)
+User Input → API → Scraper Engine → Data Processing → Database → Dashboard
+
+Future improvements include:
+- Distributed scraping workers
+- Job queue system (e.g., Redis + BullMQ)
+- Scalable SaaS infrastructure
+
+---
+
+## 🚧 Project Status
+
+This project is currently:
+
+- Not production-ready  
+- Under active development  
+- Focused on building a reliable MVP  
+
+Expect breaking changes, incomplete features, and ongoing refactoring.
+
+---
+
+## ⚠️ Disclaimer
+
+This project interacts with publicly available data from Google Maps.
+
+- Use responsibly and ensure compliance with applicable laws and platform terms of service.
+- This tool is intended for educational and business intelligence purposes.
+
+---
+
+## 📂 Project Structure (Planned)
+/client → Frontend app
+/server → Backend API
+/scraper → Scraping engine
+/database → Models & schema
+/admin → Admin panel
+---
+
+## 🧪 Local Setup (Coming Soon)
+
+Setup instructions will be added once the MVP stabilizes.
+
+---
+
+## 🤝 Contributing
+
+Currently not open for public contributions while core architecture is being built.
+
+---
+
+## 📜 License
+
+TBD
