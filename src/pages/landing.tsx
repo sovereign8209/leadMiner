@@ -95,7 +95,7 @@ export default function Landing() {
             <a href="#how" style={s.navLink}>How it works</a>
             <a href="#faq" style={s.navLink}>FAQ</a>
             <Link to="/login" style={s.navLinkSecondary}>Sign in</Link>
-            <Link to="/signup" style={s.navCta}>Get Started Free</Link>
+            <Link to="/tool" style={s.navCta}>Get Started Free</Link>
           </div>
         </div>
       </nav>
