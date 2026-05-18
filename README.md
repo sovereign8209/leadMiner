@@ -90,16 +90,6 @@ This project interacts with publicly available data from Google Maps.
 - Use responsibly and ensure compliance with applicable laws and platform terms of service.
 - This tool is intended for educational and business intelligence purposes.
 
----
-
-## 📂 Project Structure (Planned)
-/client → Frontend app
-/server → Backend API
-/scraper → Scraping engine
-/database → Models & schema
-/admin → Admin panel
----
-
 ## 🧪 Local Setup (Coming Soon)
 
 Setup instructions will be added once the MVP stabilizes.
