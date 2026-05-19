@@ -55,7 +55,6 @@ class ScrapeRequest(BaseModel):
 
 # ── STEALTH BROWSER HELPER ────────────────────────────────────────────────────
 def make_stealth_page(browser):
-    """Create a browser context that looks like a real user."""
     context = browser.new_context(
         user_agent=(
             "Mozilla/5.0 (X11; Linux x86_64) "
@@ -67,7 +66,13 @@ def make_stealth_page(browser):
         timezone_id="Asia/Kolkata",
     )
     page = context.new_page()
-    # Hide webdriver flag — key anti-detection step
+
+    # ✅ Increase timeout to 60s
+    page.set_default_timeout(60000)
+
+    # ✅ Block images/fonts/css — loads pages faster
+    page.route("**/*.{png,jpg,jpeg,gif,svg,css,woff,woff2}", lambda route: route.abort())
+
     page.add_init_script(
         "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
     )
@@ -176,8 +181,8 @@ def enrich_urls(
         for idx, (name, url) in enumerate(url_data, start=1):
             logger.info(f"   [{idx}/{len(url_data)}] {name}")
             try:
-                page.goto(url)
-                page.wait_for_timeout(4000)
+                page.goto(url, wait_until="domcontentloaded", timeout=60000)
+                page.wait_for_timeout(2000)
 
                 # ⭐ Rating
                 rating = None
