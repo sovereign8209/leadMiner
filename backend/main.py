@@ -8,6 +8,22 @@ import pandas as pd
 import asyncio
 import logging
 import io
+import subprocess
+import os
+
+# Install Playwright chromium on startup if not found
+def ensure_browser():
+    try:
+        subprocess.run(
+            ["python", "-m", "playwright", "install", "chromium"],
+            check=True,
+            capture_output=True
+        )
+        logger.info("✅ Playwright chromium installed")
+    except Exception as e:
+        logger.warning(f"⚠️ Playwright install warning: {e}")
+
+ensure_browser()
 
 # ── LOGGING ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
