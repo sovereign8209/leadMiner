@@ -125,7 +125,7 @@ export default function Landing() {
           </p>
 
           <div data-animate style={s.heroCtas}>
-            <Link to="/signup" style={s.ctaPrimary}>
+            <Link to="/tool" style={s.ctaPrimary}>
               Start Mining Free →
             </Link>
             <a href="#how" style={s.ctaSecondary}>
