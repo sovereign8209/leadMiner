@@ -97,29 +97,21 @@ export default function Tool() {
   }
 
   async function handleExport() {
-    if (!category.trim() || !location.trim()) return
     try {
-      const res = await fetch(`${BACKEND_URL}/scrape`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          category: category.trim(),
-          location: location.trim(),
-          min_reviews: minReviews,
-          max_reviews: maxReviews,
-          max_results: maxResults,
-        }),
-      })
-      if (!res.ok) throw new Error('Export failed')
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `${category}_${location}_leads.xlsx`.replace(/\s+/g, '_')
-      a.click()
-      window.URL.revokeObjectURL(url)
+        const res = await fetch(`${BACKEND_URL}/export`, {
+            method: 'GET',   // ← GET not POST, no body needed
+        })
+        if (!res.ok) throw new Error('Export failed')
+
+        const blob = await res.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${category}_${location}_leads.xlsx`.replace(/\s+/g, '_')
+        a.click()
+        window.URL.revokeObjectURL(url)
     } catch (err: any) {
-      setError(err.message || 'Export failed')
+        setError(err.message || 'Export failed')
     }
   }
 

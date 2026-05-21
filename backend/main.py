@@ -10,6 +10,11 @@ import subprocess
 import threading
 import json
 import io
+import queue as queue_module
+
+# ── IN-MEMORY CACHE ───────────────────────────────────────────────────────────
+# Stores last scrape result per session (simple single-user cache for now)
+last_leads_cache: list[dict] = []
 
 # ── LOGGING ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -291,11 +296,11 @@ def root():
 
 @app.post("/scrape/stream")
 async def scrape_stream(request: ScrapeRequest):
+    global last_leads_cache
     """
     SSE endpoint — streams real-time progress to the frontend.
     Returns log messages as they happen, then final leads as JSON.
     """
-    import queue as queue_module
 
     progress = queue_module.Queue()
     result_holder = {"leads": [], "error": None}
@@ -320,6 +325,7 @@ async def scrape_stream(request: ScrapeRequest):
     thread.start()
 
     async def event_generator():
+        global last_leads_cache
         loop = asyncio.get_event_loop()
 
         while True:
@@ -327,6 +333,8 @@ async def scrape_stream(request: ScrapeRequest):
             msg = await loop.run_in_executor(None, progress.get)
 
             if msg is None:
+                last_leads_cache = result_holder["leads"]  # ← cache it
+
                 # Sentinel received — scraper finished
                 if result_holder["error"]:
                     yield f"data: {json.dumps({'type': 'error', 'message': result_holder['error']})}\n\n"
@@ -416,3 +424,20 @@ async def scrape_excel(request: ScrapeRequest):
     except Exception as e:
         logger.error(f"Pipeline error: {e}")
         raise HTTPException(status_code=500, detail=f"Scraper error: {str(e)}")
+    
+@app.get("/export")
+def export_excel():
+    """Export last scrape result as Excel — no re-scraping."""
+    if not last_leads_cache:
+        raise HTTPException(status_code=404, detail="No leads to export. Run a scrape first.")
+
+    df = pd.DataFrame(last_leads_cache)
+    buffer = io.BytesIO()
+    df.to_excel(buffer, index=False)
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": "attachment; filename=leads_export.xlsx"}
+    )
