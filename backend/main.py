@@ -347,6 +347,9 @@ async def scrape_stream(request: ScrapeRequest):
         }
     )
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/scrape/json")
 async def scrape_json(request: ScrapeRequest):
